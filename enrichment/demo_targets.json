@@ -1,0 +1,34 @@
+{
+  "_comment": "Everything the live demo touches. Edit this to match the disease area the team locks in, then run: python -m scripts.prefetch",
+  "disease_area": "Amyotrophic Lateral Sclerosis (ALS)",
+  "patient_summaries": [
+    {
+      "condition_id": "MONDO:0004976",
+      "condition_name": "Amyotrophic Lateral Sclerosis",
+      "treatment_id": "RXCUI:1092422",
+      "treatment_name": "Riluzole"
+    },
+    {
+      "condition_id": "MONDO:0004976",
+      "condition_name": "Amyotrophic Lateral Sclerosis",
+      "treatment_id": "RXCUI:2470699",
+      "treatment_name": "Tofersen"
+    },
+    {
+      "condition_id": "MONDO:0004976",
+      "condition_name": "Amyotrophic Lateral Sclerosis",
+      "treatment_id": "RXCUI:2371781",
+      "treatment_name": "Edaravone"
+    }
+  ],
+  "trial_contexts": [
+    { "nct_id": "NCT03127267", "trial_title": "" },
+    { "nct_id": "NCT02784613", "trial_title": "" },
+    { "nct_id": "NCT04856982", "trial_title": "" }
+  ],
+  "competitive_signals": [
+    { "target_id": "HGNC:11179", "target_name": "SOD1" },
+    { "target_id": "HGNC:11571", "target_name": "TDP-43" },
+    { "target_id": "HGNC:28337", "target_name": "C9orf72" }
+  ]
+}

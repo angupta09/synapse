@@ -1,0 +1,19 @@
+# Secrets — credentials are shared out of band, never committed
+.env
+enrichment/.env
+
+# Local logs
+*.log
+
+__pycache__/
+*.pyc
+.venv/
+venv/
+node_modules/
+.next/
+
+# NOTE: enrichment/cache.db is intentionally COMMITTED.
+# It holds the prefetched + pinned Bright Data results for the demo so that
+# nobody has to re-scrape on another machine. It contains public web content
+# only — verified to contain no credentials.
+!enrichment/cache.db
