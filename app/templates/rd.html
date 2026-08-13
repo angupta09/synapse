@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% set nav = 'rd' %}
+{% block title %}Repurposing opportunities — Synapse{% endblock %}
+{% block body %}
+<h1>Repurposing opportunities</h1>
+<p class="lede">
+  Enter a drug, target, pathway, or disease for an opportunity brief and candidate
+  repurposing hypotheses with their evidence trail. Stretch scope — blocks 1 and 3 only.
+</p>
+
+<form class="search" method="get" action="/rd">
+  <div>
+    <label for="q">Drug, target, pathway, or disease</label>
+    <input id="q" name="q" value="{{ q }}" placeholder="e.g. SOD1" required>
+  </div>
+  <button type="submit">Build brief</button>
+</form>
+
+{% if brief %}
+<div class="card">
+  <h2 style="margin-top:0">Opportunity summary</h2>
+  <p>{{ brief.mechanism }}</p>
+</div>
+
+<h2>Repurposing candidates</h2>
+{% for c in brief.candidates %}
+<div class="card">
+  <div class="verdict">
+    <span class="score">{{ (c.confidence * 100) | round | int }}%</span>
+    <strong>{{ c.drug }} → {{ c.disease }}</strong>
+  </div>
+  <p>{{ c.rationale }}</p>
+  <div class="sources">
+    <h4>Evidence</h4>
+    <ul>
+      {% for e in c.evidence %}
+      <li><a href="{{ e.url }}" target="_blank" rel="noopener">{{ e.study_id }}</a> — {{ e.label }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

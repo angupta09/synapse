@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Synapse{% endblock %}</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">SYN<span>APSE</span></div>
+    <nav>
+      <a href="/" class="{{ 'on' if nav == 'home' }}">Home</a>
+      <a href="/patient" class="{{ 'on' if nav == 'patient' }}">Patient</a>
+      <a href="/trial-design" class="{{ 'on' if nav == 'trial' }}">Trial Design</a>
+      <a href="/rd" class="{{ 'on' if nav == 'rd' }}">R&amp;D</a>
+    </nav>
+  </header>
+  <main>
+    {% if not live() %}
+    <div class="banner">
+      <strong>Stub data.</strong> Drug approval facts are real; study identifiers and
+      percentages are placeholders until Team A/C's APIs land. Set <code>BACKEND_URL</code> to go live.
+    </div>
+    {% endif %}
+    {% block body %}{% endblock %}
+  </main>
+</body>
+</html>

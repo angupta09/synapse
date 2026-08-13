@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% set nav = 'trial' %}
+{% block title %}Trial design risk — Synapse{% endblock %}
+{% block body %}
+<h1>Pressure-test a trial design</h1>
+<p class="lede">
+  Describe a proposed study. We compare it against the design parameters of past
+  trials in the same disease area that were terminated, withdrawn, or completed negative.
+</p>
+
+<form class="search" method="get" action="/trial-design">
+  <div>
+    <label for="disease">Disease area</label>
+    <input id="disease" name="disease" value="{{ disease }}"
+           placeholder="e.g. amyotrophic lateral sclerosis" required>
+  </div>
+  <div>
+    <label for="phase">Phase</label>
+    <select id="phase" name="phase">
+      {% for p in ['Phase 1', 'Phase 2', 'Phase 2/3', 'Phase 3'] %}
+      <option {{ 'selected' if p == phase }}>{{ p }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div>
+    <label for="enrollment">Target enrollment</label>
+    <input id="enrollment" name="enrollment" type="number" min="1" value="{{ enrollment }}">
+  </div>
+  <div>
+    <label for="endpoint">Primary endpoint</label>
+    <select id="endpoint" name="endpoint">
+      {% for e in ['Functional rating scale', 'Overall survival', 'Biomarker change', 'Composite'] %}
+      <option {{ 'selected' if e == endpoint }}>{{ e }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button type="submit">Analyze risk</button>
+</form>
+
+{% if result %}
+<div class="card">
+  <div class="verdict">
+    <span class="score">{{ result.verdict }}</span>
+  </div>
+  <p style="margin:10px 0 0">{{ result.headline }}</p>
+</div>
+
+<h2>Failure patterns matched</h2>
+{% for p in result.patterns %}
+<div class="card">
+  <div class="verdict">
+    <span class="score">{{ p.pct }}%</span>
+    <strong>{{ p.reason }}</strong>
+  </div>
+  <p>{{ p.description }}</p>
+  <div class="sources">
+    <h4>Cited trials ({{ p.n }} comparable studies reviewed)</h4>
+    <ul>
+      {% for c in p.citations %}
+      <li>
+        <a href="{{ c.url }}" target="_blank" rel="noopener">{{ c.study_id }}</a> — {{ c.label }}
+        <div class="why">whyStopped: {{ c.why_stopped }}</div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endfor %}
+
+<h2>What the trials that worked did differently</h2>
+{% for s in result.comparable_successes %}
+<div class="card">
+  <strong>{{ s.label }}</strong>
+  <p>{{ s.differed_by }}</p>
+  <div class="sources">
+    <h4>Source</h4>
+    <ul>
+      <li><a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.study_id }}</a></li>
+    </ul>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

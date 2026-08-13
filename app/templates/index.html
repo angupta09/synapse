@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% set nav = 'home' %}
+{% block body %}
+<h1>One evidence-grounded data spine, three audiences.</h1>
+<p class="lede">
+  From "what are my options?" to "what should we build next?" — with every claim
+  traceable to a real source record.
+</p>
+
+<div class="tiles">
+  <a class="card tile" href="/patient">
+    <div class="tag">Portal 1 · Patients</div>
+    <h3>Find treatment options</h3>
+    <p>Approved drugs and open clinical trials for your condition, in plain English.</p>
+  </a>
+  <a class="card tile" href="/trial-design">
+    <div class="tag">Portal 2 · Trial teams</div>
+    <h3>Pressure-test a trial design</h3>
+    <p>See how trials shaped like yours failed before — and what the ones that worked did differently.</p>
+  </a>
+  <a class="card tile" href="/rd">
+    <div class="tag">Portal 3 · R&amp;D</div>
+    <h3>Find repurposing opportunities</h3>
+    <p>Where else could this mechanism work, and what evidence supports it?</p>
+  </a>
+</div>
+{% endblock %}

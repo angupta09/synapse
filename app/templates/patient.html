@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% set nav = 'patient' %}
+{% block title %}Find treatment options — Synapse{% endblock %}
+{% block body %}
+<h1>Find available options</h1>
+<p class="lede">
+  Search a condition to see approved treatments and clinical trials. Everything here
+  comes from FDA drug labels and the public ClinicalTrials.gov registry.
+</p>
+
+<form class="search" method="get" action="/patient">
+  <div>
+    <label for="condition">Condition</label>
+    <input id="condition" name="condition" list="conditions" value="{{ condition }}"
+           placeholder="e.g. amyotrophic lateral sclerosis" required>
+    <datalist id="conditions">
+      <option value="Amyotrophic lateral sclerosis (ALS)">
+      <option value="Duchenne muscular dystrophy">
+      <option value="Huntington's disease">
+      <option value="Cystic fibrosis">
+    </datalist>
+  </div>
+  <div>
+    <label for="location">Location</label>
+    <input id="location" name="location" value="{{ location }}" placeholder="City or state">
+  </div>
+  <button type="submit">Find available options</button>
+</form>
+
+{% if rows %}
+<table>
+  <thead>
+    <tr>
+      <th>Treatment option</th>
+      <th>Status</th>
+      <th>Phase</th>
+      <th>Study number</th>
+      <th>Location</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in rows %}
+    <tr>
+      <td class="opt">
+        <button type="button" onclick="document.getElementById('d{{ loop.index }}').showModal()">
+          {{ r.name }}
+        </button>
+      </td>
+      <td>
+        {% if r.status == 'Approved' %}{% set cls = 'approved' %}
+        {% elif 'accepting' in r.status %}{% set cls = 'recruiting' %}
+        {% else %}{% set cls = 'notstarted' %}{% endif %}
+        <span class="pill {{ cls }}">{{ r.status }}</span>
+      </td>
+      <td>{{ r.phase }}</td>
+      <td>{{ r.study_id }}</td>
+      <td>{{ r.location }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% for r in rows %}
+<dialog id="d{{ loop.index }}">
+  <form method="dialog"><button class="close" aria-label="Close">&times;</button></form>
+  <h3>{{ r.name }}</h3>
+  <p class="lede" style="margin:4px 0 16px">{{ r.status }}{% if r.phase != '—' %} · {{ r.phase }}{% endif %}</p>
+  <p>{{ r.summary }}</p>
+  <p><strong>How to find out more:</strong> {{ r.contact }}</p>
+  <div class="sources">
+    <h4>Sources</h4>
+    <ul>
+      {% for s in r.sources %}
+      <li><a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.label }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</dialog>
+{% endfor %}
+
+<p class="disclaimer">
+  This page shows public information from the FDA and the ClinicalTrials.gov registry.
+  It is not medical advice and is not a clinical decision tool. Talk to your care team
+  before making any decision about treatment.
+</p>
+{% elif condition %}
+<p class="empty">No options found for "{{ condition }}".</p>
+{% endif %}
+{% endblock %}
