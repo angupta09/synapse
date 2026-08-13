@@ -12,7 +12,11 @@
   <div>
     <label for="disease">Disease area</label>
     <input id="disease" name="disease" value="{{ disease }}"
-           placeholder="e.g. amyotrophic lateral sclerosis" required>
+           placeholder="e.g. amyotrophic lateral sclerosis"
+           aria-describedby="disease-error" required>
+    <span class="field-error" id="disease-error" data-error-for="disease" role="alert" hidden>
+      Enter a disease area to compare against.
+    </span>
   </div>
   <div>
     <label for="phase">Phase</label>

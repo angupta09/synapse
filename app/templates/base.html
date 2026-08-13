@@ -8,12 +8,17 @@
 </head>
 <body>
   <header class="top">
-    <div class="brand">SYN<span>APSE</span></div>
+    <div class="brand">SYNAPSE</div>
     <nav>
-      <a href="/" class="{{ 'on' if nav == 'home' }}">Home</a>
-      <a href="/patient" class="{{ 'on' if nav == 'patient' }}">Patient</a>
-      <a href="/trial-design" class="{{ 'on' if nav == 'trial' }}">Trial Design</a>
-      <a href="/rd" class="{{ 'on' if nav == 'rd' }}">R&amp;D</a>
+      {% for key, href, label in [
+        ('home', '/', 'Home'),
+        ('patient', '/patient', 'Patient'),
+        ('trial', '/trial-design', 'Trial Design'),
+        ('rd', '/rd', 'R&D'),
+      ] %}
+      <a href="{{ href }}" class="{{ 'on' if nav == key }}"
+         {% if nav == key %}aria-current="page"{% endif %}>{{ label }}</a>
+      {% endfor %}
     </nav>
   </header>
   <main>
@@ -25,5 +30,34 @@
     {% endif %}
     {% block body %}{% endblock %}
   </main>
+
+  <!-- Delegated listeners, so no element carries an inline handler and a strict
+       CSP only has to allow this one block. No framework, no external file. -->
+  <script>
+    document.addEventListener('click', function (e) {
+      var trigger = e.target.closest('[data-dialog]');
+      if (!trigger) return;
+      var d = document.getElementById(trigger.dataset.dialog);
+      if (d) d.showModal();
+    });
+
+    // 'invalid' does not bubble — capture it. Replaces the browser bubble with a
+    // message that stays on screen and is announced.
+    document.addEventListener('invalid', function (e) {
+      var msg = document.querySelector('[data-error-for="' + e.target.id + '"]');
+      if (!msg) return;
+      e.preventDefault();
+      msg.hidden = false;
+      e.target.setAttribute('aria-invalid', 'true');
+      e.target.focus();
+    }, true);
+
+    document.addEventListener('input', function (e) {
+      var msg = document.querySelector('[data-error-for="' + e.target.id + '"]');
+      if (!msg || msg.hidden) return;
+      msg.hidden = true;
+      e.target.removeAttribute('aria-invalid');
+    });
+  </script>
 </body>
 </html>

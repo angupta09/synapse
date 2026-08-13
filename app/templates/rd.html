@@ -11,7 +11,11 @@
 <form class="search" method="get" action="/rd">
   <div>
     <label for="q">Drug, target, pathway, or disease</label>
-    <input id="q" name="q" value="{{ q }}" placeholder="e.g. SOD1" required>
+    <input id="q" name="q" value="{{ q }}" placeholder="e.g. SOD1"
+           aria-describedby="q-error" required>
+    <span class="field-error" id="q-error" data-error-for="q" role="alert" hidden>
+      Enter a drug, target, pathway, or disease.
+    </span>
   </div>
   <button type="submit">Build brief</button>
 </form>

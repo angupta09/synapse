@@ -5,3 +5,8 @@ venv/
 .env
 .pytest_cache/
 .DS_Store
+
+# Planning docs stay local: master plan, per-team briefs, todos, prompts, agent
+# instructions. README.md is the only tracked markdown.
+*.md
+!README.md
