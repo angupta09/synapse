@@ -1,4 +1,4 @@
-turns fragmented public clinical trial and drug data into three focused tools: one for patients, one for trial designers, and one for R&D teams hunting for the next opportunity.
+Synapse turns fragmented public clinical trial and drug data into three focused tools: one for patients, one for trial designers, and one for R&D teams hunting for the next opportunity.
 
 Built with Bright Data and Convoke.
 
